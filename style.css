@@ -1,0 +1,47 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-size: cover;
+  background-image: url(bliss.jpg);
+  z-index: 0;
+}
+
+a {
+  color: black; 
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+}
+
+.container {
+  position: relative;
+}
+
+audio::-webkit-media-controls-play-button,
+     audio::-webkit-media-controls-panel {
+     background-image: url(dogs/crustydogSMALLEST.gif);
+     color: #ffffff;
+     }
+
+
+
+
+/* edited code from https://www.geeksforgeeks.org/css/css-pulse-animation/ */
+        @keyframes pulse {
+            0% {
+                transform: scale(0.7);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(0.7);
+            }
+        }
+        .pulse {
+            animation: pulse 3s steps(15, end) infinite;
+        }

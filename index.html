@@ -1,0 +1,511 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Miss Zuri</title>
+
+</head>
+<!DOCTYPE html>
+<html ang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/x-icon" href="doghead.png">
+    <meta charset="utf-8" />
+
+  </head>
+
+
+
+<script type="text/javascript">
+  
+// <![CDATA[
+var colour="random"; // in addition to "random" can be set to any valid colour eg "#f0f" or "red"
+var sparkles=50;
+
+/****************************
+*  Tinkerbell Magic Sparkle *
+*(c)2005-13 mf2fm web-design*
+*  http://www.mf2fm.com/rv  *
+* DON'T EDIT BELOW THIS BOX *
+****************************/
+var x=ox=400;
+var y=oy=300;
+var swide=800;
+var shigh=600;
+var sleft=sdown=0;
+var tiny=new Array();
+var star=new Array();
+var starv=new Array();
+var starx=new Array();
+var stary=new Array();
+var tinyx=new Array();
+var tinyy=new Array();
+var tinyv=new Array();
+
+window.onload=function() { if (document.getElementById) {
+  var i, rats, rlef, rdow;
+  for (var i=0; i<sparkles; i++) {
+    var rats=createDiv(3, 3);
+    rats.style.visibility="hidden";
+    rats.style.zIndex="999";
+    document.body.appendChild(tiny[i]=rats);
+    starv[i]=0;
+    tinyv[i]=0;
+    var rats=createDiv(5, 5);
+    rats.style.backgroundColor="transparent";
+    rats.style.visibility="hidden";
+    rats.style.zIndex="999";
+    var rlef=createDiv(1, 5);
+    var rdow=createDiv(5, 1);
+    rats.appendChild(rlef);
+    rats.appendChild(rdow);
+    rlef.style.top="2px";
+    rlef.style.left="0px";
+    rdow.style.top="0px";
+    rdow.style.left="2px";
+    document.body.appendChild(star[i]=rats);
+  }
+  set_width();
+  sparkle();
+}}
+
+function sparkle() {
+  var c;
+  if (Math.abs(x-ox)>1 || Math.abs(y-oy)>1) {
+    ox=x;
+    oy=y;
+    for (c=0; c<sparkles; c++) if (!starv[c]) {
+      star[c].style.left=(starx[c]=x)+"px";
+      star[c].style.top=(stary[c]=y+1)+"px";
+      star[c].style.clip="rect(0px, 5px, 5px, 0px)";
+      star[c].childNodes[0].style.backgroundColor=star[c].childNodes[1].style.backgroundColor=(colour=="random")?newColour():colour;
+      star[c].style.visibility="visible";
+      starv[c]=50;
+      break;
+    }
+  }
+  for (c=0; c<sparkles; c++) {
+    if (starv[c]) update_star(c);
+    if (tinyv[c]) update_tiny(c);
+  }
+  setTimeout("sparkle()", 40);
+}
+
+function update_star(i) {
+  if (--starv[i]==25) star[i].style.clip="rect(1px, 4px, 4px, 1px)";
+  if (starv[i]) {
+    stary[i]+=1+Math.random()*3;
+    starx[i]+=(i%5-2)/5;
+    if (stary[i]<shigh+sdown) {
+      star[i].style.top=stary[i]+"px";
+      star[i].style.left=starx[i]+"px";
+    }
+    else {
+      star[i].style.visibility="hidden";
+      starv[i]=0;
+      return;
+    }
+  }
+  else {
+    tinyv[i]=50;
+    tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+    tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+    tiny[i].style.width="2px";
+    tiny[i].style.height="2px";
+    tiny[i].style.backgroundColor=star[i].childNodes[0].style.backgroundColor;
+    star[i].style.visibility="hidden";
+    tiny[i].style.visibility="visible"
+  }
+}
+
+function update_tiny(i) {
+  if (--tinyv[i]==25) {
+    tiny[i].style.width="1px";
+    tiny[i].style.height="1px";
+  }
+  if (tinyv[i]) {
+    tinyy[i]+=1+Math.random()*3;
+    tinyx[i]+=(i%5-2)/5;
+    if (tinyy[i]<shigh+sdown) {
+      tiny[i].style.top=tinyy[i]+"px";
+      tiny[i].style.left=tinyx[i]+"px";
+    }
+    else {
+      tiny[i].style.visibility="hidden";
+      tinyv[i]=0;
+      return;
+    }
+  }
+  else tiny[i].style.visibility="hidden";
+}
+
+document.onmousemove=mouse;
+function mouse(e) {
+  if (e) {
+    y=e.pageY;
+    x=e.pageX;
+  }
+  else {
+    set_scroll();
+    y=event.y+sdown;
+    x=event.x+sleft;
+  }
+}
+
+window.onscroll=set_scroll;
+function set_scroll() {
+  if (typeof(self.pageYOffset)=='number') {
+    sdown=self.pageYOffset;
+    sleft=self.pageXOffset;
+  }
+  else if (document.body && (document.body.scrollTop || document.body.scrollLeft)) {
+    sdown=document.body.scrollTop;
+    sleft=document.body.scrollLeft;
+  }
+  else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+    sleft=document.documentElement.scrollLeft;
+    sdown=document.documentElement.scrollTop;
+  }
+  else {
+    sdown=0;
+    sleft=0;
+  }
+}
+
+window.onresize=set_width;
+function set_width() {
+  var sw_min=999999;
+  var sh_min=999999;
+  if (document.documentElement && document.documentElement.clientWidth) {
+    if (document.documentElement.clientWidth>0) sw_min=document.documentElement.clientWidth;
+    if (document.documentElement.clientHeight>0) sh_min=document.documentElement.clientHeight;
+  }
+  if (typeof(self.innerWidth)=='number' && self.innerWidth) {
+    if (self.innerWidth>0 && self.innerWidth<sw_min) sw_min=self.innerWidth;
+    if (self.innerHeight>0 && self.innerHeight<sh_min) sh_min=self.innerHeight;
+  }
+  if (document.body.clientWidth) {
+    if (document.body.clientWidth>0 && document.body.clientWidth<sw_min) sw_min=document.body.clientWidth;
+    if (document.body.clientHeight>0 && document.body.clientHeight<sh_min) sh_min=document.body.clientHeight;
+  }
+  if (sw_min==999999 || sh_min==999999) {
+    sw_min=800;
+    sh_min=600;
+  }
+  swide=sw_min;
+  shigh=sh_min;
+}
+
+function createDiv(height, width) {
+  var div=document.createElement("div");
+  div.style.position="absolute";
+  div.style.height=height+"px";
+  div.style.width=width+"px";
+  div.style.overflow="hidden";
+  return (div);
+}
+
+function newColour() {
+  var c=new Array();
+  c[0]=255;
+  c[1]=Math.floor(Math.random()*256);
+  c[2]=Math.floor(Math.random()*(256-c[1]/2));
+  c.sort(function(){return (0.5 - Math.random());});
+  return ("rgb("+c[0]+", "+c[1]+", "+c[2]+")");
+}
+// ]]>
+</script>
+
+
+
+
+  
+<body>
+
+
+
+<div>
+
+  <div style="background-color: blue;display: flex;white-space: nowrap;overflow-x: scroll;color: black;">
+
+    <div style="z-index: 4;width:300px;background-color: red;">
+      &nbsp; <br>
+      &nbsp; <a href="index.html">Home</a> &nbsp; <br>
+      &nbsp;
+    </div>
+
+    <div style="z-index: 4;width:300px;background-color: orange;">
+      &nbsp; <br>
+      &nbsp; <a " href="Kahoot.html"> Kahoot</a> &nbsp; <br>
+      &nbsp;
+    </div>
+
+    <div style="z-index: 4;width:300px;background-color: yellow;">
+      &nbsp; <br>
+      &nbsp; <a href="Blooket.html">Blooket</a> &nbsp; <br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: green;">
+     &nbsp;<br>
+      &nbsp; <a href="Quizlet.html">Quizlet</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: blue;">
+      &nbsp;<br>
+      &nbsp; <a href="Screen_Record.html">Screen Record</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: purple;">
+      &nbsp;<br>
+      &nbsp; <a href="ChatGPT.html">Chat GPT</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: red;">
+      &nbsp;<br>
+      &nbsp; <a href="Plickers.html">Plickers</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: orange;">
+      &nbsp;<br>
+      &nbsp; <a href="Sketch_Up.html">Sketch Up</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: yellow;">
+      &nbsp;<br>
+      &nbsp; <a href="Coggle.html">Coggle</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: green;">
+      &nbsp;<br>
+      &nbsp; <a href="Communication.html">Communication</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: blue;">
+      &nbsp;<br>
+      &nbsp; <a href="Lapse _Photography.html">Lapse Photography</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: purple;">
+     &nbsp;<br>
+      &nbsp; <a href="Canva.html">Canva</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: red;">
+      &nbsp;<br>
+      &nbsp; <a href="Pixir.html">Pixir</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: orange;">
+      &nbsp;<br>
+      &nbsp; <a href="Poll_Everywhere.html">Poll Everywhere</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: yellow;">
+      &nbsp;<br>
+      &nbsp; <a href="Survey.html">Survey</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: green;">
+      &nbsp;<br>
+      &nbsp; <a href="Google_Quiz.html">Google Quiz</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: blue;">
+      &nbsp;<br>
+      &nbsp; <a href="Database.html">Database</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: purple;">
+      &nbsp;<br>
+      &nbsp; <a href="Locations_and_Map.html">Locations and Map</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: red;">
+      &nbsp;<br>
+      &nbsp; <a href="Quickwrite.html">Quickwrite</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: orange;">
+      &nbsp;<br>
+      &nbsp; <a href="EdPuzzle.html">EdPuzzle</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: yellow;">
+      &nbsp;<br>
+      &nbsp; <a href="Mobile_App.html">Mobile App</a> &nbsp;<br>
+      &nbsp;
+    </div>
+
+    <div style="width:300px;background-color: green;">
+      &nbsp; <br>
+      &nbsp; <a href="Lesson_Plan.html">Lesson Plan</a> &nbsp; <br>
+      &nbsp;http://127.0.0.1:5500/dogcalc.gif
+    </div>
+
+  </div>
+
+
+</div>
+
+<div style="font-size: 100px;text-align: left;overflow-x: scroll;">
+  <img style="position:absolute;left:-63px;top:20px;height:250px;z-index:3;" src="dogcalc.gif"></img>
+
+  &nbsp; &nbsp; &nbsp;Zuriel Silva ⊹ ࣪ ˖
+</div>
+
+<div>
+  &nbsp;
+</div>
+
+
+
+<!--THE BIG DIV HOLDING EVERYTHING-->
+<div style="display: flex; justify-content: space-around;">
+  
+<!--FIRST DIV-->
+  <div style="height:100%;width: 30%;">
+    <!--div1-->
+    <center>
+    <div style="width:100%;">
+      <!--about me-->
+        <div style="height:100%;width:90%;">
+      <div style="font-size: 20px;">Introduction!</div>
+          <div style="width:100%;background-color: white;">
+            &nbsp;
+          <div>
+            <div style="width:90%;background-color: green;"> <br>
+            <img src="IMG_2276.jpeg" style="width:90%"> <br>
+            &nbsp;
+            </div>
+          </div>
+          &nbsp;
+          </div>
+
+         &nbsp;
+          
+          <div style="width:100%;background-color: white;">
+            &nbsp;
+            <div style="width:90%;background-color: red;">
+              &nbsp;
+              <div style="width:90%;background-color: white;">
+                &nbsp; <br>
+                Hello everyone my name is Zuriel Silva! <br>
+                I got my bachelors of arts with a mathematics major and computer science minor May 2026 from Scripps College. <br>
+                I have a particularly strong interest in number theory and the history of mathematics. <br>
+                While often seen as a subject done alone mathematics is an incredibly collaborative practice. The ways both formulas and people 
+                connect through it are what make it so fascinating to me, and this aspect is something I hope to eventually share in my classroom. <br>
+                &nbsp; <br>
+                Click <a style="color: red;" href="https://drive.google.com/file/d/17Ncet1DmAO3qAhMNUXn_tmoM6Zzqz1a3/view?usp=sharing">here</a> for my resume! <br>
+                &nbsp; 
+            </div>
+            &nbsp;
+            </div>
+            &nbsp;
+          </div>
+
+        </div>
+      </div>
+
+    </center>
+
+  </div>
+
+  <!--SECOND DIV-->
+  <div style="height:100%; width: 40%;overflow: hidden;">
+    &nbsp;
+    <center>
+      &nbsp;
+    <div style="background-color: white">
+      &nbsp; <br>
+      <div style="background-color: orange;width:90%;">
+      &nbsp; <br>
+      <iframe width="90%" height="200px" src="https://www.youtube.com/embed/LN--erHStqA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> <br>
+      &nbsp;
+      </div>
+      &nbsp;
+    </div>
+    &nbsp; <br>
+    <div style="width:100%;background-color: white;">
+       &nbsp;
+        <div style="width:90%;background-color: hotpink;">
+           &nbsp;
+          <div style="width:90%;background-color: white;">
+            &nbsp; <br>
+            I think a lot of the time people tend to forget mathematicians are people rather than calculators. With this comes a large amount of drama happening between mathematicians. 
+            <br> In truth, my intro to history of mathematics was learning about the conflict between Newton and Leibniz when I was in high school. I soon realizing most mathematicians have a long series of relationships with one another, both positive and negative.<br>
+            I hope by seeing that these highly regarded mathematicians, have drama just like us "regular folk," we can see math as a more approachable subject as it was built by people not so different from us! :] <br>
+            Here are some fun videos if you want to start getting caught up on math gossip! <br>
+          &nbsp;
+          </div>
+          &nbsp;
+        </div>
+        &nbsp;
+      </div>
+      &nbsp; <br>
+
+      <div style="width:100%;background-color: white;">
+        &nbsp;
+        <div style="width:90%;background-color: yellow;">
+            &nbsp; <br>
+            <iframe width="90%" height="200px" src="https://www.youtube.com/embed/0ASgzwHliDQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          &nbsp;
+        </div>
+        &nbsp;
+      </center>
+  </div>
+
+
+
+
+  <!--THIRD DIV-->
+  <div style="height:100%; width: 30%;overflow:hidden;">
+    <center>
+      <div style="font-size: 20px;">My favorite mathematicians!</div>
+    <div style="width:90%;background-color: white;">
+      &nbsp;
+      <div style="width:90%;background-color: purple;">
+        &nbsp; <br>
+            <a href="https://en.wikipedia.org/wiki/Ada_Lovelace"><img src="Ada_Lovelace.jpg" style="width:90%"></a> <br>
+          &nbsp;
+      </div>
+      &nbsp;
+    </div>
+    &nbsp;
+      <div style="width:90%;background-color: white;">
+      &nbsp;
+      <div style="width:90%;background-color: blue;">
+        &nbsp; <br>
+            <a href="https://en.wikipedia.org/wiki/Alan_Turing"><img src="Alan_Turing.jpg" style="width:90%"> </a><br>
+          &nbsp;
+      </div>
+      &nbsp;
+    </div>
+    </center>
+  </div>
+
+</div>
+
+<div>
+  &nbsp;
+</div>
+
+
+</body>
+</html>
